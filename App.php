@@ -1,6 +1,40 @@
 <?php
     class App{
         private $w;
+        private $dep = Array(
+            "scripts" => Array(),
+            "stylesheets" => Array()
+        );
+        
+        public function __construct($appProperties){
+            $this->loadLanguage();
+            foreach($appProperties['dependencies'] as $dep){
+                echo $this->correctURILocator($dep)."<br>";
+                switch( $this->getFileExtension($dep) ){
+                    case "js":
+                        array_push($this->dep['scripts'], '<script type="text/javascript" src="'.$dep.'"></script>');
+                    break;
+                        
+                    case "css":
+                        array_push($this->dep['stylesheets'], '<link rel="stylesheet" href="'.$dep.'">');
+                    break;
+                }
+            }
+        }
+        
+        public function correctURILocator($uri){
+            $p = parse_url($uri);
+            if( !empty($p['host']) && $_SERVER['SERVER_NAME'] == $p['host'] ){
+                $uri = $p['path'];
+            }
+            return $uri;
+        }
+        
+        public function getFileExtension($URI){
+            $p = parse_url($URI, PHP_URL_PATH);
+            return pathinfo($p, PATHINFO_EXTENSION);
+        }
+            
         public function loadLanguage(){
             $lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
             $acceptLang = ['es', 'en']; 
@@ -51,5 +85,4 @@
             echo $string;
         }
     }
-$phpApp = new App;
 ?>
