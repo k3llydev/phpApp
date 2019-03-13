@@ -2,7 +2,11 @@
     class App{
         private $w;
         public function loadLanguage(){
-            $data = file_get_contents(BASE_URL."phpApp/languages/es-mx.json");
+            $lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+            $acceptLang = ['es', 'en']; 
+            $lang = in_array($lang, $acceptLang) ? $lang : 'en';
+            $data = file_get_contents(BASE_URL."phpApp/languages/{$lang}.json");
+            //The JSON file contains most of the words used by the web app to be shown as output.
             $this->w = json_decode($data);
         }
         
