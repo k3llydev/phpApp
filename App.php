@@ -9,14 +9,13 @@
         public function __construct($appProperties){
             $this->loadLanguage();
             foreach($appProperties['dependencies'] as $dep){
-                echo $this->correctURILocator($dep)."<br>";
                 switch( $this->getFileExtension($dep) ){
                     case "js":
-                        array_push($this->dep['scripts'], '<script type="text/javascript" src="'.$dep.'"></script>');
+                        array_push($this->dep['scripts'], '<script type="text/javascript" src="'.$this->correctURILocator($dep).'"></script>');
                     break;
                         
                     case "css":
-                        array_push($this->dep['stylesheets'], '<link rel="stylesheet" href="'.$dep.'">');
+                        array_push($this->dep['stylesheets'], '<link rel="stylesheet" href="'.$this->correctURILocator($dep).'">');
                     break;
                 }
             }
