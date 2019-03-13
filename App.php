@@ -23,9 +23,10 @@
         
         public function correctURILocator($uri){
             $p = parse_url($uri);
-            if( !empty($p['host']) && $_SERVER['SERVER_NAME'] == $p['host'] ){
+            if( empty($p['host']) || $_SERVER['SERVER_NAME'] == $p['host'] ){
                 $uri = $p['path'];
             }
+            echo $uri."<br>";
             return $uri;
         }
         
